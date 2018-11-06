@@ -6,6 +6,7 @@ export const questionService = {
   getAll,
   upvote,
   downvote,
+  comment,
 };
 
 function post(username, title, content) {
@@ -44,6 +45,7 @@ function upvote(id) {
   return fetch(`${config.apiUrl}/questions/upvote`, requestOptions)
     .then(handleResponse)
     .then(question => {
+      Utils.contract.mint()
       return question;
     });
 }
@@ -56,6 +58,21 @@ function downvote(id) {
   };
 
   return fetch(`${config.apiUrl}/questions/downvote`, requestOptions)
+    .then(handleResponse)
+    .then(question => {
+      return question;
+    });
+}
+
+function comment(id, text) {
+  console.log("question service sending comment to backend");
+  const requestOptions = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id, text }),
+  };
+
+  return fetch(`${config.apiUrl}/questions/comment`, requestOptions)
     .then(handleResponse)
     .then(question => {
       return question;

@@ -7,10 +7,13 @@
     "start": "webpack-dev-server --progress --colors --hot --config ./webpack.config.js",
     "build": "webpack",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint --ext .jsx --ext .js app --fix"
+    "lint": "eslint --ext .jsx --ext .js app --fix",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "author": "Tian Qin <tianqin@berkeley.edu>",
   "license": "ISC",
+  "homepage": "http://spockqin.github.io/inglenook",
   "devDependencies": {
     "@babel/preset-stage-2": "^7.0.0",
     "babel-core": "^6.26.3",
@@ -26,6 +29,7 @@
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^6.1.1",
     "eslint-plugin-react": "^7.11.0",
+    "gh-pages": "^2.0.1",
     "style-loader": "^0.22.1",
     "webpack": "^4.16.5",
     "webpack-cli": "^3.1.0",

@@ -8,6 +8,7 @@ export const questionActions = {
   getAll,
   upvote,
   downvote,
+  comment,
 };
 
 function post(username, title, content) {
@@ -84,6 +85,28 @@ function downvote(id) {
     dispatch(request({ id }));
 
     questionService.downvote(id)
+      .then(
+        question => {
+          dispatch(success(question));
+          // dispatch(alertActions.success('Question posted'));
+        },
+        error => {
+          dispatch(failure(error.toString()));
+          dispatch(alertActions.error(error.toString()));
+        },
+      );
+  };
+}
+
+function comment(questionId, text) {
+  function request(question) { return { type: questionConstants.COMMENT_REQUEST, question } }
+  function success(question) { return { type: questionConstants.COMMENT_SUCCESS, question } }
+  function failure(error) { return { type: questionConstants.COMMENT_FAILURE, error } }
+
+  return (dispatch) => {
+    dispatch(request({ questionId }));
+
+    questionService.comment(questionId, text)
       .then(
         question => {
           dispatch(success(question));

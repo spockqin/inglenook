@@ -30,6 +30,12 @@ export function questions(state = {}, action) {
       return {};
     case questionConstants.DOWNVOTE_FAILURE:
       return {};
+    case questionConstants.COMMENT_REQUEST:
+      return { commenting: true };
+    case questionConstants.COMMENT_SUCCESS:
+      return {};
+    case questionConstants.COMMENT_FAILURE:
+      return {};
     default:
       return state;
   }

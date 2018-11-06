@@ -11,10 +11,13 @@ contract InkToken {
 
     event Burn(address indexed from, uint256 value);
 
+    event Mint(address indexed addr, uint256 value);
+
     function InkToken(uint256 initialSupply) public {
         balanceOf[msg.sender] = initialSupply;
         name = "inglenook";
         symbol = "INK";
+        totalSupply = initialSupply;
     }
 
     function _transfer(address _from, address _to, uint256 _value) internal {
@@ -25,7 +28,7 @@ contract InkToken {
         balanceOf[_from] -= _value;
         balanceOf[_to] += _value;
         emit Transfer(_from, _to, _value);
-        assert(balanceOf[_from] + balanceOf[_to] == previousBalances);
+        assert(balanceOf[_from] + balanceOf[_to] == previousSum);
     }
 
     function transfer(address _to, uint256 _value) public returns (bool success) {
@@ -43,6 +46,13 @@ contract InkToken {
         balanceOf[msg.sender] -= _value;
         totalSupply -= _value;
         emit Burn(msg.sender, _value);
+        return true;
+    }
+
+    function mint(address _addr, uint256 _value) public returns (bool success) {
+        balanceOf[_addr] += _value;
+        totalSupply += _value;
+        emit Mint(_addr, _value);
         return true;
     }
 }

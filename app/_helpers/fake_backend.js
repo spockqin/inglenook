@@ -1,3 +1,4 @@
+// import { tronWeb } from '../components/TronWeb';
 let users = JSON.parse(localStorage.getItem('users')) || [];
 let questions = JSON.parse(localStorage.getItem('questions')) || [];
 
@@ -136,6 +137,7 @@ export function configureFakeBackend() {
           newQuestion.id = questions.length ? Math.max(...questions.map(question => question.id)) + 1 : 1;
           newQuestion.upvotes = 0;
           newQuestion.downvotes = 0;
+          newQuestion.comments = [];
           questions.push(newQuestion);
           localStorage.setItem('questions', JSON.stringify(questions));
 
@@ -154,6 +156,7 @@ export function configureFakeBackend() {
             if (questions[i].id == target.id) {
               questions[i].upvotes += 1;
               found = true;
+
               break;
             }
           }
@@ -180,6 +183,32 @@ export function configureFakeBackend() {
           for (let i = 0; i < questions.length; i++) {
             if (questions[i].id == target.id) {
               questions[i].downvotes += 1;
+              found = true;
+              break;
+            }
+          }
+
+          if (found) {
+            localStorage.setItem('questions', JSON.stringify(questions));
+
+            // respond 200 OK
+            resolve({ ok: true, text: () => Promise.resolve() });
+          } else {
+            reject('Not found');
+          }
+
+
+          return;
+        }
+
+        if (url.endsWith('/questions/comment') && opts.method === 'POST') {
+          // get new question object from post body
+          let target = JSON.parse(opts.body);
+          let found = false;
+
+          for (let i = 0; i < questions.length; i++) {
+            if (questions[i].id == target.id) {
+              questions[i].comments.push(target.text);
               found = true;
               break;
             }
